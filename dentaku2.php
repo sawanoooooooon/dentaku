@@ -26,13 +26,9 @@
     </form>
 
     <?php
-    //var_dump(isset($_POST['txtA'], $_POST['txtB'], $_POST['selOpe']));
-    //var_dump(is_numeric($_POST['txtA']));
 
     $err_msg = "";
 
-
-    //if (isset($_POST['txtA'], $_POST['txtB'], $_POST['selOpe']) && is_numeric($_POST['txtA']) && is_numeric($_POST['txtB']) && ($_POST['txtB'])!= 0){
     if (!isset($_POST['txtA'], $_POST['txtB'], $_POST['selOpe'])){
       $err_msg = '文字を入力してください';
 
