@@ -20,56 +20,62 @@
       <input type = "text" name = "txtB">  =  ?
 
       <br>
-      <input type = "submit" value = "計算">
+      <input type = "submit" name ="Submit" value = "計算">
       <input type = "reset" value = "クリア">
 
     </form>
 
     <?php
 
-    $err_msg = "";
+    if (isset($_POST['Submit'])){
+      $err_msg = "";
+      $answer = "";
+      $divide = "÷";
+      $txa = mb_convert_kana($_POST['txtA'],"n");
+      $txb = mb_convert_kana($_POST['txtB'],"n");
+      $ope =$_POST['selOpe'];
 
-    if (!isset($_POST['txtA'], $_POST['txtB'], $_POST['selOpe'])){
-      $err_msg = '文字を入力してください';
+      if (!isset($txa, $txb, $ope)){
+        $err_msg = '文字を入力してください';
 
-    } elseif (!is_numeric($_POST['txtA']) && !is_numeric($_POST['txtB'])){
-      $err_msg ='数値を入力してください';
-
-    } elseif (($_POST['selOpe']) == "÷" && ($_POST['txtB']) == 0){
-      $err_msg ='0で割れないです';
-    }
-
-    if(!empty($err_msg)){
-      print e("$err_msg");
-
-    }else{
-      $a = $_POST['txtA'];
-      $b = $_POST['txtB'];
-      $ope = $_POST['selOpe'];
-
-      switch ($ope) {
-        case "＋":
-          $answer = $a + $b;
-          break;
-        case "－":
-          $answer = $a - $b;
-          break;
-        case "×":
-          $answer = $a * $b;
-          break;
-        case "÷":
-          $answer = $a / $b;
-          break;
-        default:
-          break;
+      } elseif (!is_numeric($txa) || !is_numeric($txb)){
+        $err_msg ='数値を入力してください';
       }
 
-      print e($a . " " . $ope . " " . $b . " = " . $answer . "\n");
+        switch ($ope) {
+        case "＋":
+          $answer = $txa + $txb;
+          break;
+        case "－":
+          $answer = $txa - $txb;
+          break;
+        case "×":
+          $answer = $txa * $txb;
+          break;
+        case "÷":
+          if ($txb == 0){
+            $err_msg = '0で割れないです';
+            break;
+            }
+          $answer = $txa / $txb;
+          break;
+        default:
+          $err_msg ='計算できません';
+          break;
+        }
+
+      if(!empty($err_msg)){
+        print "$err_msg";
+      }else{
+        print to_html($txa . " " . $ope . " " . $txb . " = " . $answer . "\n");
+      }
     }
 
-    function e($str, $charset = 'UTF-8'){
+    function to_html($str, $charset = 'UTF-8'){
       return htmlspecialchars($str, ENT_QUOTES, $charset);
     }
+
+
 
     ?>
     <br />
