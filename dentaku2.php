@@ -7,7 +7,7 @@
   </head>
   <body>
 
-    <form name="form1" action="dentaku2.php" method="post">
+    <form name="form" action="dentaku2.php" method="post">
       <input type = "text" name = "txtA">
 
       <select name="selOpe" size=1>
@@ -17,7 +17,7 @@
         <option value = "÷">÷</option>
       </select>
 
-      <input type = "text" name = "txtB">  =  ?
+      <input type = "text" name = "txtB">
 
       <br>
       <input type = "submit" name ="Submit" value = "計算">
@@ -30,34 +30,34 @@
     if (isset($_POST['Submit'])){
       $err_msg = "";
       $answer = "";
-      $divide = "÷";
-      $txa = mb_convert_kana($_POST['txtA'],"n");
-      $txb = mb_convert_kana($_POST['txtB'],"n");
       $ope =$_POST['selOpe'];
 
-      if (!isset($txa, $txb, $ope)){
+      if (!isset($txta, $txtb, $ope)){
         $err_msg = '文字を入力してください';
 
-      } elseif (!is_numeric($txa) || !is_numeric($txb)){
+      } elseif (!is_numeric($txta) || !is_numeric($txtb)){
         $err_msg ='数値を入力してください';
       }
 
-        switch ($ope) {
+      $txta = mb_convert_kana($_POST['txtA'],"n");
+      $txtb = mb_convert_kana($_POST['txtB'],"n");
+
+      switch ($ope) {
         case "＋":
-          $answer = $txa + $txb;
+          $answer = $txta + $txtb;
           break;
         case "－":
-          $answer = $txa - $txb;
+          $answer = $txta - $txtb;
           break;
         case "×":
-          $answer = $txa * $txb;
+          $answer = $txta * $txtb;
           break;
         case "÷":
-          if ($txb == 0){
+          if ($txtb == 0){
             $err_msg = '0で割れないです';
             break;
             }
-          $answer = $txa / $txb;
+          $answer = $txta / $txtb;
           break;
         default:
           $err_msg ='計算できません';
@@ -67,7 +67,7 @@
       if(!empty($err_msg)){
         print "$err_msg";
       }else{
-        print to_html($txa . " " . $ope . " " . $txb . " = " . $answer . "\n");
+        print to_html($txta . " " . $ope . " " . $txtb . " = " . $answer . "\n");
       }
     }
 
